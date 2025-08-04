@@ -1,7 +1,8 @@
 # pwgen Project
 
 Creates passwords
-which are easy enough to be spoken
+which are easy enough to be remembered
+(or transferred via audio/telephone)
 while being secure enough for usage.
 
 The base idea is stolen from xkcd.com: https://preshing.com/20110811/xkcd-password-generator/.
@@ -30,7 +31,6 @@ The application supports the following command line options:
 ./target/pwgen-1-runner -U 4
 ```
 
-
 ## Native Apps via Quarkus and GraalVM
 
 This project uses Quarkus and Graal to create native apps for macOS and linux.
@@ -42,43 +42,3 @@ For the linux app, docker needs to be installed.
 Calling `build.sh` on macOS creates both native apps
 and copies them into the project's root directory
 with the names `pwgen-macos` and `pwgen-linux`.
-
-## Installation via Homebrew
-
-On macOS, you can install pwgen using Homebrew:
-
-### Option 1: Using a tap (recommended)
-
-```shell
-# Add the tap repository
-brew tap timo-stuelten/pwgen https://github.com/timo-stuelten/homebrew-pwgen
-
-# Install pwgen
-brew install pwgen
-```
-
-### Option 2: Installing from a local formula
-
-If you have the formula file locally, you can install it directly:
-
-```shell
-# Clone the repository
-git clone https://github.com/timo-stuelten/pwgen.git
-cd pwgen
-
-# Install from the local formula
-brew install --formula ./pwgen.rb
-```
-
-### Creating a Homebrew Tap Repository
-
-To make your formula available via a tap, you need to:
-
-1. Create a GitHub repository named `homebrew-pwgen`
-2. Add the `pwgen.rb` formula file to this repository
-3. Users can then tap your repository with `brew tap timo-stuelten/pwgen`
-
-Before publishing:
-- Update the URL in the formula to point to your actual release
-- Calculate the SHA256 checksum with `shasum -a 256 pwgen-macos`
-- Update the version to match your actual release version
