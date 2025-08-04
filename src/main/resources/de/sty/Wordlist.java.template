@@ -1,0 +1,55 @@
+/*
+ * Copyright 2024 Timo Stülten (pionira GmbH)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package de.sty;
+
+import javax.annotation.processing.Generated;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+/**
+ * Contains all words used for passwords.
+ * <p/>
+ * GENERATED SOURCE.
+ * You need to change the template Wordlist.java.template
+ * and call build.sh (maybe with --pre-compile-only option)
+ *
+ * @see #defaultWordList()
+ */
+@Generated("build.sh")
+public class Wordlist {
+
+    private static final String WORDS = """
+            @@@WORDLIST@@@
+            """;
+
+    /**
+     * Parses all words from {@link #WORDS}.
+     *
+     * @return all words as {@link List}.
+     */
+    public static List<String> defaultWordList() {
+        List<String> ret = new ArrayList<>();
+
+        StringTokenizer stringTokenizer = new StringTokenizer(WORDS);
+        while(stringTokenizer.hasMoreTokens()) {
+            ret.add(stringTokenizer.nextToken().trim());
+        }
+
+        return ret;
+    }
+
+}

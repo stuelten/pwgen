@@ -1,0 +1,22 @@
+#Maven
+target/
+
+# IntelliJ
+.idea
+*.ipr
+*.iml
+*.iws
+
+# Visual Studio Code
+.vscode
+.factorypath
+
+# OSX
+.DS_Store
+
+# patch
+*.orig
+*.rej
+
+# Local environment
+.env
