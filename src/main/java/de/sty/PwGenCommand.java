@@ -42,6 +42,9 @@ public class PwGenCommand implements Runnable {
     @CommandLine.Option(names = {"-U", "--wordsStartWithUppercase"}, description = "Set first character of each word to uppercase")
     boolean wordsStartWithUppercase;
 
+    @CommandLine.Option(defaultValue = "", names = {"-L", "--lang"}, description = "Language to use, e.g. 'de' or 'en'")
+    String lang;
+
     public List<String> readWordList(String filename) throws IOException {
         List<String> words;
 
@@ -143,7 +146,12 @@ public class PwGenCommand implements Runnable {
     @Override
     public void run() {
         try {
-            List<String> wordList = readWordList("wordlist_" + Locale.getDefault().getLanguage() + ".txt");
+            String langToUse = lang;
+            if (langToUse == null || langToUse.isEmpty()) {
+                langToUse = Locale.getDefault().getLanguage();
+                System.err.println("Use default language: " + langToUse);
+            }
+            List<String> wordList = readWordList("wordlist_" + langToUse + ".txt");
             String ret = generate(wordList, number, delimiters(), numberOfDigits);
             System.out.println(ret);
         } catch (IOException e) {
