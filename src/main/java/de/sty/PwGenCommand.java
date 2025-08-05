@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Timo Stülten (pionira GmbH)
+ * Copyright 2025 Timo Stülten (pionira GmbH)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,10 +93,11 @@ public class PwGenCommand implements Runnable {
         return ret;
     }
 
+    @SuppressWarnings("StringConcatenationInLoop")
     public String generate(List<String> wordList, int number, List<String> delimiters, int numberOfDigits) {
         Objects.requireNonNull(wordList);
         if (number < 0 || number > wordList.size()) {
-            throw new IllegalArgumentException("number must be > 0 and < " + wordList.size() + "! Actual: " + number);
+            throw new IllegalArgumentException("number must be > 0 and <= " + wordList.size() + "! Actual: " + number);
         }
         Objects.requireNonNull(delimiters);
 
@@ -130,6 +131,7 @@ public class PwGenCommand implements Runnable {
         return ret;
     }
 
+    @SuppressWarnings("StringConcatenationInLoop")
     public String generateDigits(int numberOfDigits) {
         String ret = "";
         for (int j = 0; j < numberOfDigits; j++) {

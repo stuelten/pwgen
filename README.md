@@ -21,7 +21,7 @@ The application supports the following command line options:
 ### Example Usage
 
 ```shell script
-# Generate a password with 4 words, default number of digits and delimiters
+# Generate a password with 4 words, default number of digits and delimiters in the default locale
 ./target/pwgen-1-runner 4
 
 # Generate a password with 3 words, 5 digits, and custom delimiters
@@ -29,6 +29,11 @@ The application supports the following command line options:
 
 # Generate a password with 4 words, with first character of each word uppercase
 ./target/pwgen-1-runner -U 4
+
+# Generate a password with 4 words, default number of digits and delimiters 
+# in the german locale
+# using the uberjar
+java -Duser.language=de -jar target/pwgen-1-runner.jar -U 4
 ```
 
 ## Native Apps via Quarkus and GraalVM
@@ -42,3 +47,11 @@ For the linux app, docker needs to be installed.
 Calling `build.sh` on macOS creates both native apps
 and copies them into the project's root directory
 with the names `pwgen-macos` and `pwgen-linux`.
+
+# Source of wordlists
+
+The german wordlist was collected manually.
+
+The french wordlist was distilled from https://eduscol.education.fr/186/liste-de-frequence-lexicale
+
+The english wordlist was distilled from https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/Contemporary_fiction
