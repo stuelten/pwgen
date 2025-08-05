@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @Slf4j
@@ -46,10 +47,24 @@ public class PwGenCommand implements Runnable {
 
         var in = PwGenCommand.class.getClassLoader().getResourceAsStream(filename);
         if (in == null) {
+            System.err.println("Use default wordlist.");
             words = Wordlist.defaultWordList();
         } else {
             Objects.requireNonNull(in);
-            words = IOUtils.readLines(in, StandardCharsets.UTF_8);
+            words = new ArrayList<>();
+            for (String word : IOUtils.readLines(in, StandardCharsets.UTF_8)) {
+                word = word.trim();
+                // replace blanks with CamelCase
+                while (word.contains(" ")) {
+                    int pos = word.indexOf(' ');
+                    char uppercase = Character.toUpperCase(word.charAt(pos + 1));
+                    word = word.substring(0, pos)
+                            + uppercase
+                            + word.substring(pos + 2);
+                    word = word.trim();
+                }
+                words.add(word);
+            }
         }
 
         return words;
@@ -81,7 +96,7 @@ public class PwGenCommand implements Runnable {
     public String generate(List<String> wordList, int number, List<String> delimiters, int numberOfDigits) {
         Objects.requireNonNull(wordList);
         if (number < 0 || number > wordList.size()) {
-            throw new IllegalArgumentException("number must be > 0 and < wordList.size()! Actual: " + number);
+            throw new IllegalArgumentException("number must be > 0 and < " + wordList.size() + "! Actual: " + number);
         }
         Objects.requireNonNull(delimiters);
 
@@ -126,7 +141,7 @@ public class PwGenCommand implements Runnable {
     @Override
     public void run() {
         try {
-            List<String> wordList = readWordList("wordlist_de.txt");
+            List<String> wordList = readWordList("wordlist_" + Locale.getDefault().getLanguage() + ".txt");
             String ret = generate(wordList, number, delimiters(), numberOfDigits);
             System.out.println(ret);
         } catch (IOException e) {

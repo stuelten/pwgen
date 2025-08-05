@@ -22,13 +22,13 @@ TMPFILE=$(mktemp -q /tmp/"${tempsort}".XXXXXX) || (
   exit 1
 )
 
-cat src/main/resources/wordlist_de.txt | sort --ignore-case | uniq \
-  > "${TMPFILE}" && cat "${TMPFILE}" > src/main/resources/wordlist_de.txt
+cat src/main/resources/wordlist_en.txt | sort --ignore-case | uniq \
+  > "${TMPFILE}" && cat "${TMPFILE}" > src/main/resources/wordlist_en.txt
 rm "${TMPFILE}"
 
-# Use wordlist file to create Java File containing all words
+# Use english wordlist file to create Java File containing default words
 echo "Generate source file"
-sed -e '/@@@WORDLIST@@@/ {' -e 'r src/main/resources/wordlist_de.txt' -e 'd' -e '}' \
+sed -e '/@@@WORDLIST@@@/ {' -e 'r src/main/resources/wordlist_en.txt' -e 'd' -e '}' \
   src/main/resources/de/sty/Wordlist.java.template \
   > src/main/java/de/sty/Wordlist.java
 
@@ -65,13 +65,16 @@ else
   exit 1
 fi
 
-echo "Build Uber-JAR"
+mvn ${MVN_OPTIONS} clean
+
+echo "Build Über-JAR"
 # shellcheck disable=SC2086
-mvn ${MVN_OPTIONS} clean package -Dquarkus.package.type=uber-jar
+mvn ${MVN_OPTIONS} package -Puber-jar \
+  && cp target/pwgen-*-runner.jar ./pwgen.jar
 
 echo "Build native binary"
 # shellcheck disable=SC2086
-mvn ${MVN_OPTIONS} clean package -Pnative \
+mvn ${MVN_OPTIONS} package -Pnative \
   && cp target/pwgen-*-runner ./pwgen-macos
 
 if ( docker ps > /dev/null 2>&1 )
@@ -79,7 +82,7 @@ then
   # build via docker image creates Linux binary
   echo "Build Linux Native Binary"
   # shellcheck disable=SC2086
-  mvn ${MVN_OPTIONS} clean package -Pnative -Dquarkus.native.container-build=true \
+  mvn ${MVN_OPTIONS} package -Pnative-linux \
     && cp target/pwgen-*-runner ./pwgen-linux
 else
   echo "Error calling docker. Skip build in docker container."

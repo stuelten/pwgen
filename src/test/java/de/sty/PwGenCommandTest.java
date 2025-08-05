@@ -98,4 +98,16 @@ class PwGenCommandTest {
         }
     }
 
+    @Test
+    void replaceBlanksWithCamelCase() throws IOException {
+        PwGenCommand pwGen = new PwGenCommand();
+        List<String> wordsRead = pwGen.readWordList("wordlist_test_blanks.txt");
+        for(String word : wordsRead) {
+            assertFalse(word.contains(" "));
+        }
+        assertEquals("AutoBootCode", wordsRead.get(0));
+        assertEquals("dachEuleFrau", wordsRead.get(1));
+        assertEquals("Gast", wordsRead.get(2));
+    }
+
 }
