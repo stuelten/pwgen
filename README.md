@@ -11,12 +11,13 @@ The base idea is stolen from xkcd.com: https://preshing.com/20110811/xkcd-passwo
 
 The application supports the following command line options:
 
-- `<number>`: Number of words to combine (required)
-- `<numberOfDigits>`: Generate this number of digits (default: 3)
-- `<delimiters>`: Delimiters to use between words (default: =/*-+)
-- `-U, --wordsStartWithUppercase`: Set first character of each word to uppercase
-- `-h, --help`: Show help message and exit
-- `-V, --version`: Print version information and exit
+- `<number>` Number of words to combine (required)
+- `<numberOfDigits>` Generate this number of digits (default  3)
+- `<delimiters>` Delimiters to use between words (default  =/*-+)
+- `-U, --wordsStartWithUppercase` Set first character of each word to uppercase
+- `-h, --help` Show help message and exit
+- `-L, --lang=<lang>` Language to use, e.g. 'de' or 'en'
+- `-V, --version` Print version information and exit
 
 ### Example Usage
 
