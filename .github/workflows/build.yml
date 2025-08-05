@@ -1,4 +1,4 @@
-# This is a basic workflow that is manually triggered
+# Builds all artifacts
 
 name: Build packages
 
@@ -24,6 +24,7 @@ jobs:
         with:
           distribution: 'temurin'  # Alternatives: 'zulu', 'oracle', 'corretto', etc.
           java-version: '21'
+          cache: 'maven'
 
       - name: Build all artifacts
         run: ./build.sh
