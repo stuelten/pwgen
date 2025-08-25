@@ -30,13 +30,13 @@ import java.util.Objects;
 @CommandLine.Command(name = "pwgen", mixinStandardHelpOptions = true)
 public class PwGenCommand implements Runnable {
 
-    @CommandLine.Parameters(description = "Number of words to combine.")
+    @CommandLine.Parameters(index = "0", arity = "0..1", defaultValue = "4", description = "Number of words to combine.")
     int number;
 
-    @CommandLine.Parameters(defaultValue = "3", description = "Generate this number of digits.")
+    @CommandLine.Parameters(index = "1", arity = "0..1", defaultValue = "3", description = "Generate this number of digits.")
     int numberOfDigits;
 
-    @CommandLine.Parameters(defaultValue = "=/*-+", description = "Delimiters to use between Words")
+    @CommandLine.Parameters(index = "2", arity = "0..1", defaultValue = "=/*-+", description = "Delimiters to use between words")
     String delimiters;
 
     @CommandLine.Option(names = {"-U", "--wordsStartWithUppercase"}, description = "Set first character of each word to uppercase")
@@ -45,12 +45,17 @@ public class PwGenCommand implements Runnable {
     @CommandLine.Option(defaultValue = "", names = {"-L", "--lang"}, description = "Language to use, e.g. 'de' or 'en'")
     String lang;
 
+    @CommandLine.Option(names = {"-v", "--verbose"}, defaultValue = "false", description = "be verbose.")
+    boolean verbose = false;
+
     public List<String> readWordList(String filename) throws IOException {
         List<String> words;
 
         var in = PwGenCommand.class.getClassLoader().getResourceAsStream(filename);
         if (in == null) {
-            System.err.println("Use default wordlist.");
+            if (verbose) {
+                System.err.println("Use default wordlist.");
+            }
             words = Wordlist.defaultWordList();
         } else {
             Objects.requireNonNull(in);
@@ -149,7 +154,9 @@ public class PwGenCommand implements Runnable {
             String langToUse = lang;
             if (langToUse == null || langToUse.isEmpty()) {
                 langToUse = Locale.getDefault().getLanguage();
-                System.err.println("Use default language: " + langToUse);
+                if (verbose) {
+                    System.err.println("Use default language: " + langToUse);
+                }
             }
             List<String> wordList = readWordList("wordlist_" + langToUse + ".txt");
             String ret = generate(wordList, number, delimiters(), numberOfDigits);
