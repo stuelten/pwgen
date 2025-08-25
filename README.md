@@ -53,6 +53,5 @@ with the names `pwgen-macos` and `pwgen-linux`.
 
 The german wordlist was collected manually.
 
-The french wordlist was distilled from https://eduscol.education.fr/186/liste-de-frequence-lexicale
-
-The english wordlist was distilled from https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/Contemporary_fiction
+https://github.com/bitcoin/bips/blob/master/bip-0039 contains french and english wordlists
+which can be read via `src/resources/wordlists-load.sh`.
