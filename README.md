@@ -11,13 +11,19 @@ The base idea is stolen from xkcd.com: https://preshing.com/20110811/xkcd-passwo
 
 The application supports the following command line options:
 
-- `<number>` Number of words to combine (required)
-- `<numberOfDigits>` Generate this number of digits (default  3)
-- `<delimiters>` Delimiters to use between words (default  =/*-+)
-- `-U, --wordsStartWithUppercase` Set first character of each word to uppercase
-- `-h, --help` Show help message and exit
-- `-L, --lang=<lang>` Language to use, e.g. 'de' or 'en'
-- `-V, --version` Print version information and exit
+```
+target/pwgen-1-runner --help
+Usage: pwgen [-hUvV] [-L=<lang>] [<number>] [<numberOfDigits>] [<delimiters>]
+[<number>]           Number of words to combine.
+[<numberOfDigits>]   Generate this number of digits.
+[<delimiters>]       Delimiters to use between words
+-h, --help               Show this help message and exit.
+-L, --lang=<lang>        Language to use, e.g. 'de' or 'en'
+-U, --wordsStartWithUppercase
+Set first character of each word to uppercase
+-v, --verbose            be verbose.
+-V, --version            Print version information and exit.
+```
 
 ### Example Usage
 
@@ -34,7 +40,7 @@ The application supports the following command line options:
 # Generate a password with 4 words, default number of digits and delimiters 
 # in the german locale
 # using the uberjar
-java -Duser.language=de -jar target/pwgen-1-runner.jar -U 4
+java -jar target/pwgen-1-runner.jar -L de -U 4
 ```
 
 ## Native Apps via Quarkus and GraalVM
