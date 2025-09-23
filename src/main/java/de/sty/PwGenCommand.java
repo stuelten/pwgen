@@ -54,9 +54,9 @@ public class PwGenCommand implements Runnable {
         var in = PwGenCommand.class.getClassLoader().getResourceAsStream(filename);
         if (in == null) {
             if (verbose) {
-                System.err.println("Use default wordlist.");
+                System.err.println("Cannot read wordlist: " + filename);
             }
-            words = Wordlist.defaultWordList();
+            words = null;
         } else {
             Objects.requireNonNull(in);
             words = new ArrayList<>();
@@ -159,10 +159,15 @@ public class PwGenCommand implements Runnable {
                 }
             }
             List<String> wordList = readWordList("wordlist_" + langToUse + ".txt");
+            if(wordList == null) {
+                System.err.println("ERROR: Cannot read wordlist for language " + langToUse);
+                System.exit(1);
+            }
             String ret = generate(wordList, number, delimiters(), numberOfDigits);
             System.out.println(ret);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("ERROR: " + e.getMessage());
+            System.exit(1);
         }
     }
 
