@@ -1,6 +1,8 @@
 # Builds all artifacts
 
 name: Build packages
+permissions:
+  contents: read
 
 on:
   release:
