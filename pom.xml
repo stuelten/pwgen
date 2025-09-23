@@ -14,16 +14,16 @@
     </licenses>
 
     <properties>
-        <compiler-plugin.version>3.10.1</compiler-plugin.version>
-        <java.version>17</java.version>
-        <maven.compiler.release>17</maven.compiler.release>
+        <compiler-plugin.version>3.13.0</compiler-plugin.version>
+        <java.version>21</java.version>
+        <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.5.2</quarkus.platform.version>
+        <quarkus.platform.version>3.15.3</quarkus.platform.version>
         <skipITs>true</skipITs>
-        <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
+        <surefire-plugin.version>3.2.5</surefire-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -65,12 +65,12 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.15.1</version>
+            <version>2.17.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>1.18.34</version>
         </dependency>
 
     </dependencies>
@@ -135,7 +135,9 @@
             </plugin>
         </plugins>
     </build>
+
     <profiles>
+
         <profile>
             <id>native</id>
             <activation>
@@ -148,6 +150,7 @@
                 <quarkus.package.type>native</quarkus.package.type>
             </properties>
         </profile>
+
         <profile>
             <id>native-linux</id>
             <activation>
@@ -161,16 +164,18 @@
                 <quarkus.native.container-build>true</quarkus.native.container-build>
             </properties>
         </profile>
+
         <profile>
-            <id>uber-jar</id>
+            <id>uberjar</id>
             <activation>
                 <property>
-                    <name>uber-jar</name>
+                    <name>uberjar</name>
                 </property>
             </activation>
             <properties>
                 <quarkus.package.type>uber-jar</quarkus.package.type>
             </properties>
         </profile>
+
     </profiles>
 </project>
