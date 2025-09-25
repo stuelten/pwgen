@@ -14,15 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Use strict mode for Bash scripts:
+# catch errors early and prevent silently ignoring failures.
+set -eo pipefail
+
 BASEDIR="$(dirname "$0")"
+
+if [[ "$1" == "-q" || "$1" == "--quiet" ]]; then
+  MVN_OPTIONS="--quiet $MVN_OPTIONS"
+  shift
+fi
 
 if [[ "$1" == "--fast" ]]; then
   FAST=true
   shift
 else
-  # Sort wordlist
-  "${BASEDIR}"/wordlist-generate.sh
-
   # Setup for macOS
   if [[ "Darwin" == "$(uname -s)" ]]; then
     # Install dependencies
@@ -32,11 +38,6 @@ else
 
     brew install maven
   fi
-fi
-
-if [[ "$1" == "-q" || "$1" == "--quiet" ]]; then
-  MVN_OPTIONS="--quiet $MVN_OPTIONS"
-  shift
 fi
 
 if [[ -n "$FAST" ]]; then
@@ -75,17 +76,20 @@ if [ "Darwin" == "$(uname -s)" ]; then
   mvn ${MVN_OPTIONS} package -Pnative &&
     cp target/pwgen-*-runner ./pwgen-macos
 else
-  if (docker ps >/dev/null 2>&1); then
-    # build via docker image creates Linux binary
-    echo
-    echo "Build Linux Native Binary"
-    # shellcheck disable=SC2086
-    mvn ${MVN_OPTIONS} package -Pnative-linux &&
-      cp target/pwgen-*-runner ./pwgen-linux
-  else
-    echo
-    echo "Error calling docker. Skip build in docker container."
-  fi
+  echo ""
+  echo "No macOS. Skip build for Mac."
+fi
+
+if (docker ps >/dev/null 2>&1); then
+  # build via docker image creates Linux binary
+  echo
+  echo "Build Linux Native Binary"
+  # shellcheck disable=SC2086
+  mvn ${MVN_OPTIONS} package -Pnative-linux &&
+    cp target/pwgen-*-runner ./pwgen-linux
+else
+  echo
+  echo "Error calling docker. Skip build in docker container."
 fi
 
 # Test freshly build native binary

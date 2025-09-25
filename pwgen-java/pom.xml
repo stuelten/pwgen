@@ -3,15 +3,32 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>de.sty</groupId>
-    <artifactId>pwgen</artifactId>
+    <artifactId>pwgen-java</artifactId>
     <version>1</version>
+
+    <description>A simple password generator using common words for random passwords.</description>
+    <inceptionYear>2024</inceptionYear>
+
     <licenses>
         <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <name>Apache License, Version 2.0, January 2004</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <id>timo</id>
+            <name>Timo Stülten</name>
+            <email>timo.stuelten@googlemail.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
 
     <properties>
         <compiler-plugin.version>3.13.0</compiler-plugin.version>
