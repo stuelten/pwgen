@@ -11,6 +11,9 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
+// C stuff for getenv and strlen
+#include <cstdlib>
+#include <cstring>
 #include "embedded_wordlists.hpp"
 
 struct Options {
