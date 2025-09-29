@@ -1,11 +1,4 @@
-# pwgen Project
-
-Creates passwords
-which are easy enough to be remembered
-(or transferred via audio/telephone)
-while being secure enough for usage.
-
-The base idea is stolen from xkcd.com: https://preshing.com/20110811/xkcd-password-generator/.
+# pwgen-java
 
 ## Command Line Options
 
@@ -54,10 +47,3 @@ For the linux app, docker needs to be installed.
 Calling `build.sh` on macOS creates both native apps
 and copies them into the project's root directory
 with the names `pwgen-macos` and `pwgen-linux`.
-
-# Source of wordlists
-
-The german wordlist was collected manually.
-
-https://github.com/bitcoin/bips/blob/master/bip-0039 contains french and english wordlists
-which can be read via `src/resources/wordlists-load.sh`.

@@ -4,8 +4,7 @@ A C++ translation of the Java PwGenCommand logic.
 
 ## Build
 - Requires a C++17 compiler and make
-- From repository root:
-  - `make`
+- From repository root `pwgen-cpp` call `make all`
 
 ## Run
 - From pwgen-cpp:  

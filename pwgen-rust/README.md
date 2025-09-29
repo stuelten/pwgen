@@ -1,6 +1,7 @@
 # pwgen-rust
 
-This is the Rust implementation of the pwgen tool. It is a standard Cargo project, so you can build and run it with the Rust toolchain.
+This is the Rust implementation of the pwgen tool. 
+It is a standard Cargo project, so you can build and run it with the Rust toolchain.
 
 # HowTo build and run from the command line
 

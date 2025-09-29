@@ -75,6 +75,8 @@ if [ "Darwin" == "$(uname -s)" ]; then
   # shellcheck disable=SC2086
   mvn ${MVN_OPTIONS} package -Pnative &&
     cp target/pwgen-*-runner ./pwgen-macos
+    # all other programming langs create the binary with the lang name in the binary's name
+    cp ./pwgen-macos ./pwgen-java
 else
   echo ""
   echo "No macOS. Skip build for Mac."
