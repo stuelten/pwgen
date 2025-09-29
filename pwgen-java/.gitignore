@@ -1,22 +1,11 @@
-#Maven
-target/
-
 # IntelliJ
-.idea
+.idea/
 *.ipr
 *.iml
 *.iws
 
-# Visual Studio Code
-.vscode
-.factorypath
+# Maven
+target/
 
-# OSX
-.DS_Store
-
-# patch
-*.orig
-*.rej
-
-# Local environment
-.env
+# Ignore binary
+pwgen-java

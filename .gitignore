@@ -1,0 +1,13 @@
+# IntelliJ
+.idea/
+**/.idea/
+*.ipr
+**/*.ipr
+*.iml
+**/*.iml
+*.iws
+**/*.iws
+
+# OSX
+.DS_Store
+**/.DS_Store
