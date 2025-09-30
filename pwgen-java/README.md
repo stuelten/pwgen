@@ -5,7 +5,7 @@
 The application supports the following command line options:
 
 ```
-target/pwgen-1-runner --help
+target/pwgen-java-1-runner --help
 Usage: pwgen [-hUvV] [-L=<lang>] [<number>] [<numberOfDigits>] [<delimiters>]
 [<number>]           Number of words to combine.
 [<numberOfDigits>]   Generate this number of digits.
@@ -22,18 +22,18 @@ Set first character of each word to uppercase
 
 ```shell script
 # Generate a password with 4 words, default number of digits and delimiters in the default locale
-./target/pwgen-1-runner 4
+./target/pwgen-java-1-runner 4
 
 # Generate a password with 3 words, 5 digits, and custom delimiters
-./target/pwgen-1-runner 3 5 "!@#"
+./target/pwgen-java-1-runner 3 5 "!@#"
 
 # Generate a password with 4 words, with first character of each word uppercase
-./target/pwgen-1-runner -U 4
+./target/pwgen-java-1-runner -U 4
 
 # Generate a password with 4 words, default number of digits and delimiters 
 # in the german locale
 # using the uberjar
-java -jar target/pwgen-1-runner.jar -L de -U 4
+java -jar target/pwgen-java-1-runner.jar -L de -U 4
 ```
 
 ## Native Apps via Quarkus and GraalVM

@@ -39,6 +39,8 @@ do
 done
 
 # echo results
+echo
+echo "Results:"
 echo -e "$RES" >&2
 
 ls -l pwgen-*/pwgen-*

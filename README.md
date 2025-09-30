@@ -37,19 +37,22 @@ Set first character of each word to uppercase
 ### Example Usages
 
 ```shell script
-# Generate a password with 4 words, default number of digits and delimiters in the default locale
+# Generate a password with 4 words, default number of digits, and delimiters in the default locale
 ./pwgen-cpp/pwgen-cpp 4
+
+# Generate a password with 4 words, a number with 6 digits, and default delimiters in the default locale
+./pwgen-rust/pwgen-rust 4 6
 
 # Generate a password with 3 words, 5 digits, and custom delimiters
 ./pwgen-go/pwgen-go 3 5 "!@#"
 
-# Generate a password with 4 words, with first character of each word uppercase
-./pwgen-java/target/pwgen-1-runner -U 4
+# Generate a password with 4 words, with the first character of each word uppercased
+./pwgen-java/pwgen-java -U 4
 
-# Generate a password with 4 words, default number of digits and delimiters 
+# Generate a password with 4 words, default number of digits, and delimiters 
 # in the german locale
 # using the uberjar
-java -jar target/pwgen-1-runner.jar -L de -U 4
+java -jar pwgen-java/target/pwgen-java-1-runner.jar -L de -U 4
 ```
 
 # Source of wordlists
