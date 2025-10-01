@@ -38,9 +38,9 @@ else
     brew install maven
   elif [[ "Linux" == "$( uname -s )" ]]; then
     curl -s "https://get.sdkman.io" | bash
-    sdk install quarkus
-    sdk install 25-graalce
-    sdk install maven
+    bash --login -c 'sdk install quarkus'
+    bash --login -c 'sdk install 25-graalce'
+    bash --login -c 'sdk install maven'
   fi
 fi
 
