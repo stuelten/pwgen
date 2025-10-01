@@ -10,4 +10,4 @@ elif [[ "Linux" == "$( uname -s )" ]]; then
   sudo apt install golang make
 fi
 
-make all
+make build
