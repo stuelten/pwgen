@@ -36,7 +36,7 @@ else
     # must be v21
     brew install --cask graalvm-jdk@21
     brew install maven
-  elif [[ "Linux" == "$( uname -s )" ]]; then
+  elif [[ "Linux" == "$(uname -s)" ]]; then
     curl -s "https://get.sdkman.io" | bash
     bash --login -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install quarkus'
     bash --login -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 25-graalce'
@@ -78,24 +78,25 @@ echo "Build native binary"
 if [ "Darwin" == "$(uname -s)" ]; then
   # shellcheck disable=SC2086
   mvn ${MVN_OPTIONS} package -Pnative &&
-    cp target/pwgen-*-runner ./pwgen-macos
-    # all other programming langs create the binary with the lang name in the binary's name
-    cp ./pwgen-macos ./pwgen-java
+    cp target/pwgen-*-runner ./pwgen-java
+  # all other programming langs create the binary with the lang name in the binary's name
+  cp ./pwgen-java ./pwgen-macos
+
+  if (docker ps >/dev/null 2>&1); then
+    # build via docker image creates Linux binary
+    echo
+    echo "Build Linux Native Binary"
+    # shellcheck disable=SC2086
+    mvn ${MVN_OPTIONS} package -Pnative-linux &&
+      cp target/pwgen-*-runner ./pwgen-linux
+  fi
+elif [ "Linux" == "$(uname -s)" ]; then
+  # shellcheck disable=SC2086
+  mvn ${MVN_OPTIONS} package -Pnative &&
+    cp target/pwgen-*-runner ./pwgen-java
 else
   echo ""
   echo "No macOS. Skip build for Mac."
-fi
-
-if (docker ps >/dev/null 2>&1); then
-  # build via docker image creates Linux binary
-  echo
-  echo "Build Linux Native Binary"
-  # shellcheck disable=SC2086
-  mvn ${MVN_OPTIONS} package -Pnative-linux &&
-    cp target/pwgen-*-runner ./pwgen-linux
-else
-  echo
-  echo "Error calling docker. Skip build in docker container."
 fi
 
 # Test freshly build native binary
