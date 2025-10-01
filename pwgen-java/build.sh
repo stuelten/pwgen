@@ -29,14 +29,15 @@ if [[ "$1" == "--fast" ]]; then
   FAST=true
   shift
 else
-  # Setup for macOS
+  # Install dependencies
   if [[ "Darwin" == "$(uname -s)" ]]; then
-    # Install dependencies
+    # Setup for macOS
     brew install quarkusio/tap/quarkus
     # must be v21
     brew install --cask graalvm-jdk@21
     brew install maven
   elif [[ "Linux" == "$(uname -s)" ]]; then
+    # Setup for Linux via SDKMan!
     curl -s "https://get.sdkman.io" | bash
     bash --login -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install quarkus'
     bash --login -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 25-graalce'

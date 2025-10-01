@@ -8,16 +8,7 @@ fail() {
   exit 1
 }
 
-NATIVE_BIN="pwgen"
-# Setup for macOS
-if [[ "Darwin" == "$(uname -s)" ]]; then
-  NATIVE_BIN=pwgen-macos
-elif [[ "GNU/Linux" == "$(uname -o)" ]]; then
-  NATIVE_BIN=pwgen-linux
-else
-  fail "OS not supported"
-fi
-
+NATIVE_BIN="pwgen-java"
 echo "# test $NATIVE_BIN"
 
 # only these 3 languages are supported :)
