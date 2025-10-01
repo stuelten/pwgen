@@ -12,3 +12,5 @@ fi
 
 # Build
 cargo build --release
+
+cp target/release/pwgen-rust .
