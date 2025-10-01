@@ -11,7 +11,7 @@ OPTIONS="-L fr -U 8 6 ',-*/'"
 BASE_DIR="$( pwd )"
 
 # implementations to call
-EXEC_LANGS="java go rust cpp"
+EXEC_LANGS="cpp go rust java typescript"
 
 for el in ${EXEC_LANGS}
 do
