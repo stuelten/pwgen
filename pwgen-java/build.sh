@@ -35,8 +35,12 @@ else
     brew install quarkusio/tap/quarkus
     # must be v21
     brew install --cask graalvm-jdk@21
-
     brew install maven
+  elif [[ "Linux" == "$( uname -s )" ]]; then
+    curl -s "https://get.sdkman.io" | bash
+    sdk install quarkus
+    sdk install 25-graalce
+    sdk install maven
   fi
 fi
 
