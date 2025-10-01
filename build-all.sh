@@ -14,7 +14,7 @@ do
   EXEC_DIR="${BASE_DIR}/pwgen-$el"
   cd "$EXEC_DIR" || exit
 
-  ./build.sh
+  time ./build.sh -q
 
   cd "${BASE_DIR}" || exit
 done
