@@ -12,6 +12,7 @@ The implementation is available in multiple languages:
 - C++
 - Go
 - Rust
+- TypeScript
 
 This way we are able to make some simple comparisons for the different implementations.
 The performance of the different implementations must be taken with a grain of salt:
@@ -59,5 +60,4 @@ java -jar pwgen-java/target/pwgen-java-1-runner.jar -L de -U 4
 
 The german wordlist was collected manually.
 
-https://github.com/bitcoin/bips/blob/master/bip-0039 contains french and english wordlists
-which can be read via `src/resources/wordlists-load.sh`.
+https://github.com/bitcoin/bips/blob/master/bip-0039 contains french and english wordlists.
