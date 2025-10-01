@@ -13,4 +13,5 @@ fi
 # Build
 cargo build --release
 
+# Copy binary to project root
 cp target/release/pwgen-rust .
