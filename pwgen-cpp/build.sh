@@ -5,9 +5,9 @@
 
 # Setup for macOS
 if [[ "Darwin" == "$(uname -s)" ]]; then
-  brew install gcc make
+  sudo brew install gcc make
 elif [[ "Linux" == "$( uname -s )" ]]; then
-  apt install gcc make
+  sudo apt install gcc make
 fi
 
 make all
