@@ -8,7 +8,7 @@
 if [[ "Darwin" == "$(uname -s)" ]]; then
   brew install npm
 elif [[ "Linux" == "$( uname -s )" ]]; then
-  apt install npm
+  sudo apt install npm
 fi
 
 npm install
