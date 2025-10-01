@@ -1,0 +1,37 @@
+{
+  "name": "pwgen-typescript",
+  "version": "1.0.0",
+  "description": "Password generator translated from pwgen-java (PwGenCommand) to TypeScript",
+  "private": true,
+  "type": "commonjs",
+  "bin": {
+    "pwgen": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "build:bin": "npm run build && pkg ."
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "pkg": {
+    "scripts": [
+      "dist/index.js"
+    ],
+    "assets": [
+      "assets/**/*"
+    ],
+    "targets": [
+      "node18"
+    ],
+    "outputPath": "dist/bin"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "pkg": "^5.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
