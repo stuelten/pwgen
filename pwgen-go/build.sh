@@ -5,9 +5,9 @@
 
 # Setup for macOS
 if [[ "Darwin" == "$(uname -s)" ]]; then
-  brew install gcc make
+  brew install golang make
 elif [[ "Linux" == "$( uname -s )" ]]; then
-  sudo apt install gcc make
+  sudo apt install golang make
 fi
 
 make all
