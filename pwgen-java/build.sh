@@ -39,7 +39,7 @@ else
   elif [[ "Linux" == "$( uname -s )" ]]; then
     curl -s "https://get.sdkman.io" | bash
     bash --login -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install quarkus'
-    bash --login -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install 25-graalce'
+    bash --login -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 25-graalce'
     bash --login -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install maven'
   fi
 fi
