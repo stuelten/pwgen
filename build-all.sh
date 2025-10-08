@@ -6,7 +6,7 @@
 BASE_DIR="$( pwd )"
 
 # implementations to call
-EXEC_LANGS="cpp go rust java typescript"
+EXEC_LANGS="cpp go rust java python typescript"
 
 for el in ${EXEC_LANGS}
 do

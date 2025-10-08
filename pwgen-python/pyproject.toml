@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pwgen-python"
+version = "1.0.0"
+description = "Password generator translated from pwgen-java to pure Python"
+readme = "README.md"
+authors = [{ name = "Timo Stülten", email = "timo.stuelten@googlemail.com" }]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.9"
+keywords = ["password", "generator", "pwgen"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+pwgen = "pwgen_python.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"pwgen_python.assets" = ["*.txt"]
