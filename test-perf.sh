@@ -5,6 +5,7 @@
 # Collects results
 RES=""
 # Options to call all executables with
+# shellcheck disable=SC2089
 OPTIONS="-L fr -U 8 6 ',-*/'"
 
 # base dir
@@ -16,16 +17,17 @@ EXEC_LANGS="cpp go rust java python typescript"
 for el in ${EXEC_LANGS}
 do
   echo "# Try ${el}" >&2
-  EXEC_DIR="${BASE_DIR}/pwgen-$el"
-  cd "$EXEC_DIR" || exit
-  EXEC=./pwgen-$el
+  EXEC_DIR="${BASE_DIR}/pwgen-${el}"
+  cd "${EXEC_DIR}" || exit
+  EXEC=./pwgen-${el}
 
   # execute 5 seconds and count how often the executable was executed
   count=0
   start=$(date +%s)
   while true; do
-    $EXEC ${OPTIONS} 2>&1 || true
-    count=$((count+1))
+    # shellcheck disable=SC2090
+    ${EXEC} ${OPTIONS} 2>&1 || true
+    count=$((count + 1))
     now=$(date +%s)
     if [ $((now - start)) -ge 5 ]; then
       break
@@ -41,6 +43,6 @@ done
 # echo results
 echo
 echo "Results:"
-echo -e "$RES" >&2
+echo -e "${RES}" >&2
 
 ls -l pwgen-*/pwgen-*
