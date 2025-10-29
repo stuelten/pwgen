@@ -8,9 +8,11 @@ while being secure enough for usage.
 The base idea is stolen from xkcd.com: https://preshing.com/20110811/xkcd-password-generator/.
 
 The implementation is available in multiple languages:
-- Java
+- Bash
 - C++
 - Go
+- Java
+- Python
 - Rust
 - TypeScript
 
