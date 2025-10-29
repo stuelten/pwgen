@@ -3,7 +3,7 @@
 # 1. Install prerequisites
 # 2. Build artifact
 
-# Setup for macOS
+# Setup for macOS or some debian-based linux
 if [[ "Darwin" == "$(uname -s)" ]]; then
   brew install golang make
 elif [[ "Linux" == "$( uname -s )" ]]; then

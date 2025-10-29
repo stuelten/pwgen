@@ -17,7 +17,7 @@ if [ -n "${VIRTUAL_ENV-}" ]; then
   PIP_USER_FLAG=""
 fi
 
-# Ensure Python build module is available (ensure build.__main__ is available)
+# Ensure the Python build module is available (ensure build.__main__ is available)
 if ! python3 -c "import importlib; importlib.import_module('build.__main__')" >/dev/null 2>&1; then
   python3 -m pip install ${PIP_USER_FLAG} build
 fi
@@ -43,7 +43,7 @@ pyinstaller --onefile \
   --add-data "$ASSETS_DIR/wordlist_de.txt:pwgen_python/assets" \
   "$SCRIPT_DIR/src/pwgen_python/cli.py"
 
-# Copy binary next to project root for convenience
+# Copy binary next to the project root for convenience
 if [ -f dist/pwgen-python ]; then
   cp dist/pwgen-python "$ROOT_DIR/pwgen-python/pwgen-python"
 fi

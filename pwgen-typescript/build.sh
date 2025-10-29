@@ -4,7 +4,7 @@
 # 2. Build artifact
 # 3. Move to root dir
 
-# Setup for macOS
+# Setup for macOS or some debian-based linux
 if [[ "Darwin" == "$(uname -s)" ]]; then
   brew install npm
 elif [[ "Linux" == "$( uname -s )" ]]; then

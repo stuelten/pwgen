@@ -36,8 +36,8 @@ jobs:
           java-version: '21'
           cache: 'maven'
 
-      - name: Build native binary
-        run: mvn -Pnative package
+      - name: Build native binaries
+        run: ./build-all.sh
 
-      - name: Build uberjar
-        run: mvn -Puberjar package
+      - name: Test binaries performance
+        run: ./test-perf.sh

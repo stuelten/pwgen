@@ -97,7 +97,7 @@ elif [ "Linux" == "$(uname -s)" ]; then
     cp target/pwgen-*-runner ./pwgen-java
 else
   echo ""
-  echo "No macOS. Skip build for Mac."
+  echo "No macOS or Linux. Skip build."
 fi
 
 # Test freshly build native binary
