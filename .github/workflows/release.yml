@@ -1,0 +1,79 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"  # like v1.2.3
+
+permissions:
+  contents: write  # required to create releases and upload assets
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+#        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Build all
+        run: |
+          cd pwgen
+          bash build-all.sh
+
+      # Package per-OS
+      - name: Package artifacts
+        shell: bash
+        run: |
+          set -euxo pipefail
+          cd pwgen
+          VERSION="${GITHUB_REF_NAME}"
+          OS="${{ runner.os }}"
+          OUTDIR="release-${OS}"
+          mkdir -p "$OUTDIR"
+
+          # Copy only the binaries
+          for dir in pwgen-*; do
+            cp -r "$dir/$dir" "$OUTDIR" || true
+          done
+
+          # Make archives; prefer zip for cross-platform
+          zip -r "pwgen-${VERSION}-${OS}.zip" "$OUTDIR"
+
+          # Checksums
+          shasum -a 256 "pwgen-${VERSION}-${OS}.zip" > "pwgen-${VERSION}-${OS}.zip.sha256"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}-assets
+          path: |
+            pwgen/pwgen-${{ github.ref_name }}-${{ runner.os }}.zip
+            pwgen/pwgen-${{ github.ref_name }}-${{ runner.os }}.zip.sha256
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist  # path=dist gets used below in files parameter
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: pwgen ${{ github.ref_name }}
+          draft: false
+          prerelease: ${{ contains(github.ref_name, 'rc') || contains(github.ref_name, 'beta') }}
+          files: |
+            dist/**/pwgen-${{ github.ref_name }}-*.zip
+            dist/**/pwgen-${{ github.ref_name }}-*.zip.sha256
