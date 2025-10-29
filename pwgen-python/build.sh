@@ -1,6 +1,36 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Prerequisites installation (macOS via Homebrew, Ubuntu via apt)
+OS="$(uname -s || true)"
+if [ "${OS}" = "Darwin" ]; then
+  brew install --quiet python@3 pipx
+  # Ensure pipx-provided executables are available
+  export PATH="$HOME/.local/bin:$PATH"
+  # Prefer installing CLI tooling like pyinstaller via pipx for isolation
+  if ! command -v pyinstaller >/dev/null 2>&1; then
+    if command -v pipx >/dev/null 2>&1; then
+      pipx install --include-deps pyinstaller
+    fi
+  fi
+else
+  # Try Ubuntu (e.g., GitHub Actions ubuntu-latest)
+  if [ -f /etc/os-release ] && grep -qi ubuntu /etc/os-release; then
+    echo "Detected Ubuntu. Ensuring prerequisites via apt..."
+    if command -v apt-get >/dev/null 2>&1; then
+      if command -v sudo >/dev/null 2>&1; then SUDO="sudo"; else SUDO=""; fi
+      $SUDO apt-get update -y
+      $SUDO apt-get install -y python3 python3-pip python3-venv pipx
+      export PATH="$HOME/.local/bin:$PATH"
+      if ! command -v pyinstaller >/dev/null 2>&1; then
+        if command -v pipx >/dev/null 2>&1; then
+          pipx install --include-deps pyinstaller || true
+        fi
+      fi
+    fi
+  fi
+fi
+
 # Prepare assets: copy wordlists from pwgen-java into pwgen-python assets
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"

@@ -32,10 +32,10 @@ else
   # Install dependencies
   if [[ "Darwin" == "$(uname -s)" ]]; then
     # Setup for macOS
-    brew install quarkusio/tap/quarkus
+    brew install --quiet quarkusio/tap/quarkus
     # must be v21
-    brew install --cask graalvm-jdk@21
-    brew install maven
+    brew install --quiet --cask graalvm-jdk@21
+    brew install --quiet maven
   elif [[ "Linux" == "$(uname -s)" ]]; then
     # Setup for Linux via SDKMan!
     curl -s "https://get.sdkman.io" | bash

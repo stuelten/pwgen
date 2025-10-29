@@ -6,7 +6,7 @@
 
 # Setup for macOS or some debian-based linux
 if [[ "Darwin" == "$(uname -s)" ]]; then
-  brew install npm
+  brew install --quiet npm
 elif [[ "Linux" == "$( uname -s )" ]]; then
   sudo apt install npm
 fi

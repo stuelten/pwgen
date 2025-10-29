@@ -5,7 +5,7 @@
 
 # Setup for macOS or some debian-based linux
 if [[ "Darwin" == "$(uname -s)" ]]; then
-  brew install golang make
+  brew install --quiet golang make
 elif [[ "Linux" == "$( uname -s )" ]]; then
   sudo apt install golang make
 fi
