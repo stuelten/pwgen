@@ -27,7 +27,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 @Slf4j
-@CommandLine.Command(name = "pwgen", mixinStandardHelpOptions = true)
+@CommandLine.Command(name = "pwgen", mixinStandardHelpOptions = true, version = "1.0.0")
 public class PwGenCommand implements Runnable {
 
     @CommandLine.Parameters(index = "0", arity = "0..1", defaultValue = "4", description = "Number of words to combine.")

@@ -17,6 +17,8 @@ import (
 //go:embed assets/*.txt
 var wordFS embed.FS
 
+const Version = "1.0.0"
+
 // Config holds CLI arguments
 type Config struct {
 	Number                  int
@@ -34,6 +36,7 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "  -U, --wordsStartWithUppercase   Set first character of each word to uppercase\n")
 	fmt.Fprintf(os.Stderr, "  -L, --lang <code>               Language to use, e.g. 'de' or 'en'\n")
 	fmt.Fprintf(os.Stderr, "  -v, --verbose                   Be verbose\n")
+	fmt.Fprintf(os.Stderr, "  -V, --version                   Print version information and exit\n")
 }
 
 func parseArgs() (*Config, error) {
@@ -254,6 +257,14 @@ func generate(words []string, number int, delimiters string, numberOfDigits int,
 }
 
 func main() {
+	// Early check for version flag to avoid parse errors
+	for _, a := range os.Args[1:] {
+		if a == "-V" || a == "--version" {
+			fmt.Println(Version)
+			return
+		}
+	}
+
 	cfg, err := parseArgs()
 	if err != nil {
 		usage()

@@ -127,6 +127,16 @@ interface CliOptions {
   verbose: boolean;
 }
 
+function getVersion(): string {
+  try {
+    const pkgJsonPath = join(__dirname, '..', 'package.json');
+    const pkg = JSON.parse(readFileSync(pkgJsonPath, 'utf8'));
+    return pkg.version || '0.0.0';
+  } catch {
+    return '0.0.0';
+  }
+}
+
 function parseArgs(argv: string[]): CliOptions {
   // argv[0]=node, argv[1]=script
   const rest = argv.slice(2);
@@ -171,7 +181,12 @@ function parseArgs(argv: string[]): CliOptions {
 
 function main() {
   try {
-    const cli = parseArgs(process.argv);
+    const argv = process.argv;
+    if (argv.includes('-V') || argv.includes('--version')) {
+      console.log(getVersion());
+      process.exit(0);
+    }
+    const cli = parseArgs(argv);
     let langToUse = cli.lang;
     if (!langToUse) {
       langToUse = getDefaultLanguage(cli.verbose);

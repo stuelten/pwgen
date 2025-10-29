@@ -6,7 +6,7 @@ use std::fs;
 use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
-#[command(name = "pwgen", version, about = "Generate passphrases from word lists")] 
+#[command(name = "pwgen", disable_version_flag = true, about = "Generate passphrases from word lists")] 
 struct Args {
     /// Number of words to combine.
     #[arg(index = 1, default_value_t = 4)]
@@ -31,10 +31,19 @@ struct Args {
     /// be verbose.
     #[arg(short = 'v', long = "verbose", action = ArgAction::SetTrue)]
     verbose: bool,
+
+    /// Print version information and exit
+    #[arg(short = 'V', long = "version", action = ArgAction::SetTrue)]
+    version: bool, 
 }
 
 fn main() {
     let args = Args::parse();
+
+    if args.version {
+        println!("{}", env!("CARGO_PKG_VERSION"));
+        return;
+    }
 
     let mut lang_to_use = args.lang.clone();
     if lang_to_use.is_empty() {

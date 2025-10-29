@@ -25,8 +25,10 @@ WORDS_UPPERCASE=false
 LANGUAGE=""
 VERBOSE=false
 
+VERSION=1.0.0
+
 print_version() {
-  echo "pwgen-bash 1"
+  echo "$VERSION"
 }
 
 print_help() {

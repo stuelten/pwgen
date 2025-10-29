@@ -16,6 +16,10 @@
 #include <cstring>
 #include "embedded_wordlists.hpp"
 
+#ifndef VERSION
+#define VERSION "1.0.0"
+#endif
+
 struct Options {
     int number = 4; // Number of words to combine
     int numberOfDigits = 3; // Number of digits to generate
@@ -95,7 +99,10 @@ static Options parseArgs(int argc, char **argv) {
 
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
-        if (arg == "-U" || arg == "--wordsStartWithUppercase") {
+        if (arg == "-V" || arg == "--version") {
+            std::cout << VERSION << "\n";
+            std::exit(0);
+        } else if (arg == "-U" || arg == "--wordsStartWithUppercase") {
             opt.wordsStartWithUppercase = true;
         } else if (arg == "-v" || arg == "--verbose") {
             opt.verbose = true;

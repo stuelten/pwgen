@@ -38,7 +38,7 @@ def parse_args(argv: List[str]) -> argparse.Namespace:
         "-L", "--lang", default="", help="Language to use, e.g. 'de' or 'en'"
     )
     parser.add_argument("-v", "--verbose", action="store_true", default=False, help="be verbose.")
-    parser.add_argument("-V", "--version", action="version", version=f"pwgen-python {__version__}")
+    parser.add_argument("-V", "--version", action="version", version=f"{__version__}")
 
     return parser.parse_args(argv)
 
