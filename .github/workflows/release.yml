@@ -1,4 +1,4 @@
-name: release
+name: "Release all binaries"
 
 on:
   push:
