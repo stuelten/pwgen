@@ -1,0 +1,233 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# pwgen-bash — Bash translation of pwgen-java PwGenCommand
+# Usage mirrors pwgen-java:
+#   pwgen-bash [-hUvV] [-L=<lang>] [<number>] [<numberOfDigits>] [<delimiters>]
+# Defaults:
+#   number=4, numberOfDigits=3, delimiters==/*-+
+# Options:
+#   -h, --help                       Show this help message and exit.
+#   -L, --lang=<lang>                Language to use, e.g. 'de' or 'en'
+#   -U, --wordsStartWithUppercase    Set first character of each word to uppercase
+#   -v, --verbose                    be verbose
+#   -V, --version                    Print version information and exit.
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# Allow overriding the wordlist directory via environment variable for bundled builds
+WORDLIST_DIR="${PWGEN_WORDLISTS_DIR:-${SCRIPT_DIR}/wordlists}"
+
+# Defaults as per pwgen-java
+NUMBER=4
+NUMBER_OF_DIGITS=3
+DELIMITERS='=/*-+'
+WORDS_UPPERCASE=false
+LANGUAGE=""
+VERBOSE=false
+
+print_version() {
+  echo "pwgen-bash 1"
+}
+
+print_help() {
+  cat <<'EOF'
+Usage: pwgen [-hUvV] [-L=<lang>] [<number>] [<numberOfDigits>] [<delimiters>]
+
+[number]                        Number of words to combine.
+[numberOfDigits]                Generate this number of digits.
+[delimiters]                    Delimiters to use between words
+-h, --help                      Show this help message and exit.
+-L, --lang=<lang>               Language to use, e.g. 'de' or 'en'
+-U, --wordsStartWithUppercase   Set first character of each word to uppercase
+-v, --verbose                   be verbose.
+-V, --version                   Print version information and exit.
+EOF
+}
+
+# Simple option parser supporting short and long options
+POSITIONALS=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      print_help
+      exit 0
+      ;;
+    -V|--version)
+      print_version
+      exit 0
+      ;;
+    -U|--wordsStartWithUppercase)
+      WORDS_UPPERCASE=true
+      shift
+      ;;
+    -v|--verbose)
+      VERBOSE=true
+      shift
+      ;;
+    -L|--lang)
+      if [[ "$1" == *=* ]]; then
+        LANGUAGE="${1#*=}"
+        shift
+      else
+        shift
+        LANGUAGE="${1:-}"
+        if [[ -z "${LANGUAGE}" ]]; then
+          echo "ERROR: --lang requires an argument" >&2
+          exit 2
+        fi
+        shift
+      fi
+      ;;
+    --lang=*)
+      LANGUAGE="${1#*=}"
+      shift
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -* )
+      echo "ERROR: Unknown option: $1" >&2
+      exit 2
+      ;;
+    *)
+      POSITIONALS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+# Remaining args as positionals
+if [[ ${#POSITIONALS[@]} -ge 1 ]]; then
+  NUMBER="${POSITIONALS[0]}"
+fi
+if [[ ${#POSITIONALS[@]} -ge 2 ]]; then
+  NUMBER_OF_DIGITS="${POSITIONALS[1]}"
+fi
+if [[ ${#POSITIONALS[@]} -ge 3 ]]; then
+  DELIMITERS="${POSITIONALS[2]}"
+fi
+if [[ ${#POSITIONALS[@]} -gt 3 ]]; then
+  echo "ERROR: Too many arguments" >&2
+  exit 2
+fi
+
+# Validate numeric inputs
+if ! [[ "$NUMBER" =~ ^[0-9]+$ ]] || [[ "$NUMBER" -le 0 ]]; then
+  echo "ERROR: <number> must be a positive integer" >&2
+  exit 2
+fi
+if ! [[ "$NUMBER_OF_DIGITS" =~ ^[0-9]+$ ]]; then
+  echo "ERROR: <numberOfDigits> must be a non-negative integer" >&2
+  exit 2
+fi
+
+# Determine language
+if [[ -z "${LANGUAGE}" ]]; then
+  LANGUAGE="$(locale | awk -F= '/^LANG=/{gsub(/"/,"",$2); split($2,a,"_"); print a[1]}')"
+  LANGUAGE="${LANGUAGE:-en}"
+  if $VERBOSE; then
+    echo "Use default language: ${LANGUAGE}" >&2
+  fi
+fi
+
+WORDLIST_FILE="${WORDLIST_DIR}/wordlist_${LANGUAGE}.txt"
+if [[ ! -f "${WORDLIST_FILE}" ]]; then
+  echo "ERROR: Cannot read wordlist for language ${LANGUAGE}" >&2
+  exit 1
+fi
+
+# Read word list into array, applying trimming and CamelCase for spaces like Java version
+mapfile -t WORDS < <(
+  awk '
+  function ltrim(s){ sub(/^\s+/, "", s); return s }
+  function rtrim(s){ sub(/\s+$/, "", s); return s }
+  function trim(s){ return rtrim(ltrim(s)) }
+  {
+    line=trim($0)
+    if (length(line)==0) next
+    # Replace occurrences of space + letter with uppercase(letter) and remove the space
+    # Approach: repeatedly gsub until no spaces remain between word parts
+    while (match(line, / [^ ]/)) {
+      pre=substr(line,1,RSTART-1)
+      uc=toupper(substr(line,RSTART+1,1))
+      post=substr(line,RSTART+2)
+      line=pre uc post
+    }
+    gsub(/\r$/, "", line)
+    print line
+  }' "${WORDLIST_FILE}"
+)
+
+if [[ ${#WORDS[@]} -eq 0 ]]; then
+  echo "ERROR: Wordlist is empty: ${WORDLIST_FILE}" >&2
+  exit 1
+fi
+
+# Ensure NUMBER does not exceed word list size
+if [[ "$NUMBER" -gt ${#WORDS[@]} ]]; then
+  echo "ERROR: number must be > 0 and <= ${#WORDS[@]}! Actual: ${NUMBER}" >&2
+  exit 1
+fi
+
+# Build delimiter characters array from string
+readarray -t DELIM_CHARS < <(awk -v s="${DELIMITERS}" 'BEGIN{ for(i=1;i<=length(s);i++){ print substr(s,i,1) } }')
+
+# Random utilities
+rand_int() { # args: max_exclusive
+  local max=$1
+  # Use $RANDOM (0..32767). Scale to [0,max)
+  # Avoid bias by using modulo after multiplying.
+  echo $(( RANDOM % max ))
+}
+
+# Choose k unique indices from 0..n-1
+choose_unique_indices() {
+  local k=$1 n=$2
+  local -a chosen=()
+  local -A seen=()
+  while [[ ${#chosen[@]} -lt $k ]]; do
+    local c=$(rand_int "$n")
+    if [[ -z "${seen[$c]:-}" ]]; then
+      seen[$c]=1
+      chosen+=($c)
+    fi
+  done
+  printf '%s\n' "${chosen[@]}"
+}
+
+# Generate digits string
+generate_digits() {
+  local count=$1
+  local out=""
+  for ((j=0;j<count;j++)); do
+    out+=$(( RANDOM % 10 ))
+  done
+  printf '%s' "$out"
+}
+
+# Construct password
+NUMBER_POS=$(rand_int "$NUMBER")
+
+indices=( $(choose_unique_indices "$NUMBER" "${#WORDS[@]}") )
+
+out=""
+for ((i=0;i<NUMBER;i++)); do
+  idx=${indices[$i]}
+  word=${WORDS[$idx]}
+  if $WORDS_UPPERCASE; then
+    first=${word:0:1}
+    rest=${word:1}
+    word="$(printf '%s' "$first" | awk '{printf toupper($0)}')${rest}"
+  fi
+  out+="$word"
+  if [[ "$NUMBER_OF_DIGITS" -gt 0 && "$i" -eq "$NUMBER_POS" ]]; then
+    out+="$(generate_digits "$NUMBER_OF_DIGITS")"
+  fi
+  if [[ $i -lt $((NUMBER-1)) ]]; then
+    dindex=$(rand_int "${#DELIM_CHARS[@]}")
+    out+="${DELIM_CHARS[$dindex]}"
+  fi
+done
+
+printf '%s\n' "$out"
