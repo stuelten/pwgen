@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# build.sh — bundle pwgen-bash and wordlists into a single self-contained executable
+# build.sh — bundle pwgen-bash.sh and wordlists into a single self-contained executable
 # Usage:
 #   ./build.sh [OUTPUT_FILE]
 #
 # If OUTPUT_FILE is omitted, defaults to ./pwgen-bash in this directory.
 #
 # The generated single-file executable embeds the wordlists and, at runtime,
-# extracts them to a temporary directory and runs the bundled pwgen-bash script
+# extracts them to a temporary directory and runs the bundled pwgen-bash.sh script
 # with PWGEN_WORDLISTS_DIR pointing to that directory. No external files are required.
 
 this_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -72,7 +72,7 @@ export PWGEN_WORDLISTS_DIR="$TMPDIR_STANDALONE"
 # ----- Begin embedded pwgen-bash script -----
 POST_WORDLISTS
 
-  # Append the pwgen-bash script, without its initial shebang line
+  # Append the pwgen-bash.sh script, without its initial shebang line
   tail -n +2 "$src_script"
 
   cat <<'END_SCRIPT'
