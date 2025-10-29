@@ -8,9 +8,11 @@ while being secure enough for usage.
 The base idea is stolen from xkcd.com: https://preshing.com/20110811/xkcd-password-generator/.
 
 The implementation is available in multiple languages:
-- Java
+- Bash
 - C++
 - Go
+- Java
+- Python
 - Rust
 - TypeScript
 
@@ -20,7 +22,7 @@ No implementation is optimized for speed.
 
 ## Command Line Options
 
-All implemented applications supports the following command line options:
+All implemented applications support the following command line options:
 
 ```
 Usage: pwgen-* [-hUvV] [-L=<lang>] [<number>] [<numberOfDigits>] [<delimiters>]
@@ -58,6 +60,6 @@ java -jar pwgen-java/target/pwgen-java-1-runner.jar -L de -U 4
 
 # Source of wordlists
 
-The german wordlist was collected manually.
+The German wordlist was collected manually.
 
 https://github.com/bitcoin/bips/blob/master/bip-0039 contains french and english wordlists.
