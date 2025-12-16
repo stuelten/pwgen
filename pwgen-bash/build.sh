@@ -3,13 +3,15 @@ set -euo pipefail
 
 # build.sh — bundle pwgen-bash.sh and wordlists into a single self-contained executable
 # Usage:
-#   ./build.sh [OUTPUT_FILE]
-#
-# If OUTPUT_FILE is omitted, defaults to ./pwgen-bash in this directory.
+#   ./build.sh
 #
 # The generated single-file executable embeds the wordlists and, at runtime,
 # extracts them to a temporary directory and runs the bundled pwgen-bash.sh script
 # with PWGEN_WORDLISTS_DIR pointing to that directory. No external files are required.
+
+# Install prerequisites
+brew install --quiet npm
+npm install -g shfmt sh-minify bash-obfuscate
 
 this_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 src_script="$this_dir/pwgen-bash.sh"
